@@ -99,7 +99,7 @@ async def ForceSub(bot: Client, event: Message, msg_id: str = False, mode="check
                 InlineKeyboardButton("📢 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟 📢", url=invite_link)
             ],
             [
-                InlineKeyboardButton(" 🔄 𝗧𝗥𝗬 𝗔𝗚𝗔𝗜𝗡 🔄", callback_data=f"checksub#{msg_id}")
+                InlineKeyboardButton(" 🔄 𝗧𝗥𝗬 𝗔𝗚𝗔𝗜𝗡 🔄", url=f"{msg_id}")
             ]
         ]
         
