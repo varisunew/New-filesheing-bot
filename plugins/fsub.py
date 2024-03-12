@@ -93,7 +93,7 @@ async def ForceSub(bot: Client, event: Message, msg_id: str = False, mode="check
         else:
             return True
     except UserNotParticipant:
-        text=f"**𝐇𝐞𝐲..𝐁𝐫𝐮𝐡👋 {event.from_user.mention}\n\n<b>Click the Join Channel button below. Then click on 🔄 𝗧𝗥𝗬 𝗔𝗚𝗔𝗜𝗡 🔄 to get the file.**"
+        text=f"𝐇𝐞𝐲..𝐁𝐫𝐮𝐡👋 {event.from_user.mention}\n\n<b>Click the Join Channel button below. Then click on 🔄 𝗧𝗥𝗬 𝗔𝗚𝗔𝗜𝗡 🔄 to get the file."
         buttons = [
             [
                 InlineKeyboardButton("📢 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟 📢", url=invite_link)
