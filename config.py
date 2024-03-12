@@ -11,31 +11,31 @@ from logging.handlers import RotatingFileHandler
 id_pattern = re.compile(r'^.\d+$')
 
 #Bot token @Botfather
-TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "6847223517:AAEom2AzBsC-RMW9-PGJar7rpIrd0OUC764")
+TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "6877731632:AAFt_5vknm74mNEMSRp-csxkyz5Vdmv3rWc")
 
 #Your API ID from my.telegram.org
-APP_ID = int(os.environ.get("APP_ID", "22849062"))
+APP_ID = int(os.environ.get("APP_ID", "1133652"))
 
 #Your API Hash from my.telegram.org
-API_HASH = os.environ.get("API_HASH", "e043bdee9d6f5a0061ea83d51655113f")
+API_HASH = os.environ.get("API_HASH", "a38b7b50cddc7bdb11c1c7d5546a66cb")
 
 #Your db channel Id
-CHANNEL_ID = int(os.environ.get("CHANNEL_ID", "-1001668201351"))
+CHANNEL_ID = int(os.environ.get("CHANNEL_ID", "-1002030106649"))
 
 #OWNER ID
-OWNER_ID = int(os.environ.get("OWNER_ID", "6245128154"))
+OWNER_ID = int(os.environ.get("OWNER_ID", "677065898"))
 
 #Port
 PORT = os.environ.get("PORT", "8080")
 
 #Database 
-DB_URI = os.environ.get("DB_URL", "mongodb+srv://leo:leo@cluster0.w5a4loo.mongodb.net/?retryWrites=true&w=majority")
-DB_NAME = os.environ.get("DB_NAME", "filesharexbot")
+DB_URI = os.environ.get("DB_URL", "mongodb+srv://siyadp708:NFPxdTp7LSVoUnps@cluster0.yyvkprl.mongodb.net/?retryWrites=true&w=majority")
+DB_NAME = os.environ.get("DB_NAME", "siyadp708")
 JOIN_REQS_DB = environ.get("JOIN_REQS_DB", DB_URI)
 
 #force sub channel id, if you want enable force sub
 AUTH_CHANNEL = int(os.environ.get("FORCE_SUB_CHANNEL", False))
-REQ_CHANNEL = environ.get("REQ_CHANNEL", "-1002145888782")
+REQ_CHANNEL = environ.get("REQ_CHANNEL", "-1001934212726")
 REQ_CHANNEL = int(REQ_CHANNEL) if REQ_CHANNEL and id_pattern.search(REQ_CHANNEL) else False
 
 TG_BOT_WORKERS = int(os.environ.get("TG_BOT_WORKERS", "4"))
