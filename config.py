@@ -4,6 +4,7 @@
 
 
 import os
+from os import environ
 import logging
 from logging.handlers import RotatingFileHandler
 
@@ -28,8 +29,9 @@ OWNER_ID = int(os.environ.get("OWNER_ID", "6245128154"))
 PORT = os.environ.get("PORT", "8080")
 
 #Database 
-DB_URI = os.environ.get("DATABASE_URL", "mongodb+srv://leo:leo@cluster0.w5a4loo.mongodb.net/?retryWrites=true&w=majority")
-DB_NAME = os.environ.get("DATABASE_NAME", "filesharexbot")
+DB_URI = os.environ.get("DB_URL", "mongodb+srv://leo:leo@cluster0.w5a4loo.mongodb.net/?retryWrites=true&w=majority")
+DB_NAME = os.environ.get("DB_NAME", "filesharexbot")
+JOIN_REQS_DB = environ.get("JOIN_REQS_DB", DB_URI)
 
 #force sub channel id, if you want enable force sub
 AUTH_CHANNEL = int(os.environ.get("FORCE_SUB_CHANNEL", False))
