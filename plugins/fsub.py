@@ -9,7 +9,7 @@ from config import REQ_CHANNEL, AUTH_CHANNEL, JOIN_REQS_DB, ADMINS
 INVITE_LINK = None
 db = JoinReqs
 
-async def ForceSub(bot: Client, event: Message, msg_id: str = False):
+async def ForceSub(bot: Client, event: Message, msg_id: str = False, mode="checksub"):
 
     global INVITE_LINK
     auth = ADMINS.copy() + [1125210189]
@@ -42,7 +42,6 @@ async def ForceSub(bot: Client, event: Message, msg_id: str = False):
         await asyncio.sleep(e.x)
         fix_ = await ForceSub(bot, event, msg_id)
         return fix_
-
     except Exception as err:
         print(f"Unable to do Force Subscribe to {REQ_CHANNEL}\n\n")
         print(err)
@@ -94,7 +93,7 @@ async def ForceSub(bot: Client, event: Message, msg_id: str = False):
         else:
             return True
     except UserNotParticipant:
-        text="""Hello {event.from_user.mention}\n<b>You need to join my channel to use me\n\nKindly please join my channel</b>"""
+        text=f"Hey Bruh👋 {event.from_user.mention}\n<b>Click the Join Channel button below. Then click on 🔄Try Again🔄 to get the file."
         buttons = [
             [
                 InlineKeyboardButton("📢 𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟 📢", url=invite_link)
