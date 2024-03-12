@@ -119,7 +119,7 @@ REPLY_ERROR = """<code>Use this command as a replay to any telegram message with
 @Bot.on_message(filters.command('start') & filters.private)
 async def not_joined(bot: Client, update: Message, mode="checksub"):
     try:
-        url = f"https://t.me/{client.username}?start={message.command[1]}"
+        url = f"https://t.me/{bot.username}?start={update.command[1]}"
     except IndexError:
         pass
     status = await ForceSub(bot, update, msg_id=url)
