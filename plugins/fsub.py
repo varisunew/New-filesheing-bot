@@ -110,8 +110,7 @@ async def ForceSub(bot: Client, event: Message, msg_id: str = False, mode="check
             await event.reply(
                 text=text,
                 quote=True,
-                reply_markup=InlineKeyboardMarkup(buttons),
-                parse_mode=enums.ParseMode.MARKDOWN,
+                reply_markup=InlineKeyboardMarkup(buttons)                
             )
         return False
 
