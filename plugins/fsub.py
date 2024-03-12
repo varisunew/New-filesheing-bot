@@ -107,8 +107,9 @@ async def ForceSub(bot: Client, event: Message, msg_id: str = False, mode="check
             buttons.pop()
 
         if not is_cb:
-            await event.reply(
-                text=text,
+            await event.reply_photo(
+                photo="https://telegra.ph/file/b93ddd931cb351b81e510.jpg",
+                caption=text,
                 quote=True,
                 reply_markup=InlineKeyboardMarkup(buttons)                
             )
