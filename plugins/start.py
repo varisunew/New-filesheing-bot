@@ -124,7 +124,7 @@ async def not_joined(bot: Client, update: Message, mode="checksub"):
         if not status:
             return
     except IndexError:            
-        status = await ForceSub(bot, update, msg_id=url)
+        status = await ForceSub(bot, update)
         if not status:
             return
 
