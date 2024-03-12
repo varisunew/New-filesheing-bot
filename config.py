@@ -32,7 +32,9 @@ DB_URI = os.environ.get("DATABASE_URL", "mongodb+srv://leo:leo@cluster0.w5a4loo.
 DB_NAME = os.environ.get("DATABASE_NAME", "filesharexbot")
 
 #force sub channel id, if you want enable force sub
-FORCE_SUB_CHANNEL = int(os.environ.get("FORCE_SUB_CHANNEL", "-1002145888782"))
+AUTH_CHANNEL = int(os.environ.get("FORCE_SUB_CHANNEL", False))
+REQ_CHANNEL = environ.get("REQ_CHANNEL", "-1002145888782")
+REQ_CHANNEL = int(REQ_CHANNEL) if REQ_CHANNEL and id_pattern.search(REQ_CHANNEL) else False
 
 TG_BOT_WORKERS = int(os.environ.get("TG_BOT_WORKERS", "4"))
 
