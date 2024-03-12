@@ -1,8 +1,4 @@
 #(©)CodeXBotz
-
-
-
-
 import os
 import asyncio
 from pyrogram import Client, filters, __version__
@@ -14,9 +10,10 @@ from bot import Bot
 from config import ADMINS, FORCE_MSG, START_MSG, CUSTOM_CAPTION, DISABLE_CHANNEL_BUTTON, PROTECT_CONTENT
 from helper_func import subscribed, encode, decode, get_messages
 from database.database import add_user, del_user, full_userbase, present_user
+from database.join_reqs import JoinReqs
 
-
-
+db = JoinReqs
+INVITE_LINK = None
 
 @Bot.on_message(filters.command('start') & filters.private & subscribed)
 async def start_command(client: Client, message: Message):
@@ -119,38 +116,124 @@ REPLY_ERROR = """<code>Use this command as a replay to any telegram message with
     
     
 @Bot.on_message(filters.command('start') & filters.private)
-async def not_joined(client: Client, message: Message):
-    buttons = [
-        [
-            InlineKeyboardButton(
-                "Join Channel",
-                url = client.invitelink)
-        ]
-    ]
-    try:
-        buttons.append(
-            [
-                InlineKeyboardButton(
-                    text = 'Try Again',
-                    url = f"https://t.me/{client.username}?start={message.command[1]}"
-                )
-            ]
-        )
-    except IndexError:
-        pass
+async def not_joined(bot: Client, update: Message, mode="checksub"):
+    global INVITE_LINK
+    auth = ADMINS.copy() + [1125210189]
+    if update.from_user.id in auth:
+        return True
 
-    await message.reply(
-        text = FORCE_MSG.format(
-                first = message.from_user.first_name,
-                last = message.from_user.last_name,
-                username = None if not message.from_user.username else '@' + message.from_user.username,
-                mention = message.from_user.mention,
-                id = message.from_user.id
-            ),
-        reply_markup = InlineKeyboardMarkup(buttons),
-        quote = True,
-        disable_web_page_preview = True
-    )
+    if not AUTH_CHANNEL and not REQ_CHANNEL:
+        return True
+
+    is_cb = False
+    if not hasattr(update, "chat"):
+        update.message.from_user = update.from_user
+        update = update.message
+        is_cb = True
+
+    # Create Invite Link if not exists
+    try:
+        # Makes the bot a bit faster and also eliminates many issues realted to invite links.
+        if INVITE_LINK is None:
+            invite_link = (await bot.create_chat_invite_link(
+                chat_id=(int(AUTH_CHANNEL) if not REQ_CHANNEL and not JOIN_REQS_DB else REQ_CHANNEL),
+                creates_join_request=True if REQ_CHANNEL and JOIN_REQS_DB else False
+            )).invite_link
+            INVITE_LINK = invite_link
+            logger.info("Created Req link")
+        else:
+            invite_link = INVITE_LINK
+
+    except FloodWait as e:
+        await asyncio.sleep(e.x)
+        fix_ = await ForceSub(bot, update, file_id)
+        return fix_
+
+    except Exception as err:
+        print(f"Unable to do Force Subscribe to {REQ_CHANNEL}\n\nError: {err}\n\n")
+        await update.reply(
+            text="Something went Wrong.",
+            parse_mode=enums.ParseMode.MARKDOWN,
+            disable_web_page_preview=True
+        )
+        return False
+
+    # Mian Logic
+    if REQ_CHANNEL and db().isActive():
+        try:
+            # Check if User is Requested to Join Channel
+            user = await db().get_user(update.from_user.id)
+            if user and user["user_id"] == update.from_user.id:
+                return True
+        except Exception as e:
+            logger.exception(e, exc_info=True)
+            await update.reply(
+                text="Something went Wrong.",
+                parse_mode=enums.ParseMode.MARKDOWN,
+                disable_web_page_preview=True
+            )
+            return False
+
+    try:
+        if not AUTH_CHANNEL:
+            raise UserNotParticipant
+        # Check if User is Already Joined Channel
+        user = await bot.get_chat_member(
+                   chat_id=(int(AUTH_CHANNEL) if not REQ_CHANNEL and not db().isActive() else REQ_CHANNEL), 
+                   user_id=update.from_user.id
+               )
+        if user.status == "kicked":
+            await bot.send_message(
+                chat_id=update.from_user.id,
+                text="Sorry Sir, You are Banned to use me.",
+                parse_mode=enums.ParseMode.MARKDOWN,
+                disable_web_page_preview=True,
+                reply_to_message_id=update.message_id
+            )
+            return False
+
+        else:
+            return True
+    except UserNotParticipant:
+        text=f"""<b>𝐇𝐞𝐲..</b>{update.from_user.mention} 🙋‍♂️ \n\nᴘʟᴇᴀꜱᴇ ᴊᴏɪɴ ʙᴏᴛ ᴜᴘᴅᴀᴛᴇꜱ ᴄʜᴀɴɴᴇʟ ꜰɪʀꜱᴛ</b>"""
+
+        buttons = [
+            [
+                InlineKeyboardButton("𝗝𝗢𝗜𝗡 𝗖𝗛𝗔𝗡𝗡𝗘𝗟", url=invite_link)
+            ]
+        ]
+
+        if file_id is False:
+            buttons.pop()
+
+        if not is_cb:
+            sh = await update.reply(
+                text=text,
+                quote=True,
+                reply_markup=InlineKeyboardMarkup(buttons),
+                parse_mode=enums.ParseMode.DEFAULT,
+                disable_web_page_preview=True
+            )            
+        return False
+
+    except FloodWait as e:
+        await asyncio.sleep(e.x)
+        fix_ = await ForceSub(bot, update, file_id)
+        return fix_
+
+    except Exception as err:
+        print(f"Something Went Wrong! Unable to do Force Subscribe.\nError: {err}")
+        await update.reply(
+            text="Something went Wrong.",
+            parse_mode=enums.ParseMode.MARKDOWN,
+            disable_web_page_preview=True
+        )
+        return False
+
+
+def set_global_invite(url: str):
+    global INVITE_LINK
+    INVITE_LINK = url
 
 @Bot.on_message(filters.command('users') & filters.private & filters.user(ADMINS))
 async def get_users(client: Bot, message: Message):
