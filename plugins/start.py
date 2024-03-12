@@ -146,7 +146,7 @@ async def not_joined(bot: Client, update: Message, mode="checksub"):
 
     except FloodWait as e:
         await asyncio.sleep(e.x)
-        fix_ = await ForceSub(bot, update, file_id)
+        fix_ = await not_joined(bot, update, file_id)
         return fix_
 
     except Exception as err:
@@ -166,7 +166,7 @@ async def not_joined(bot: Client, update: Message, mode="checksub"):
             if user and user["user_id"] == update.from_user.id:
                 return True
         except Exception as e:
-            logger.exception(e, exc_info=True)
+            print(e)
             await update.reply(
                 text="Something went Wrong.",
                 parse_mode=enums.ParseMode.MARKDOWN,
