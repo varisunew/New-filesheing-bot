@@ -2,13 +2,13 @@
 
 
 
-
+import re
 import os
 from os import environ
 import logging
 from logging.handlers import RotatingFileHandler
 
-
+id_pattern = re.compile(r'^.\d+$')
 
 #Bot token @Botfather
 TG_BOT_TOKEN = os.environ.get("TG_BOT_TOKEN", "7199266730:AAFqB6t4Ynqb6I2lB87BOy9-QgADlyC73Uo")
