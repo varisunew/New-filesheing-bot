@@ -108,7 +108,7 @@ async def ForceSub(bot: Client, event: Message, msg_id: str = False, mode="check
 
         if not is_cb:
             await event.reply_photo(
-                photo="https://graph.org/file/b7bfe0352ba19d3c0d21d.jpg",
+                photo="https://graph.org/file/29badf20769ae1b57ba83.jpg",
                 caption=text,
                 quote=True,
                 reply_markup=InlineKeyboardMarkup(buttons)                
