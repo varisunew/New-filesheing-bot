@@ -35,7 +35,7 @@ JOIN_REQS_DB = environ.get("JOIN_REQS_DB", DB_URI)
 
 #force sub channel id, if you want enable force sub
 AUTH_CHANNEL = int(os.environ.get("FORCE_SUB_CHANNEL", False))
-REQ_CHANNEL = environ.get("REQ_CHANNEL", "-1002017485250)
+REQ_CHANNEL = environ.get("REQ_CHANNEL", "-1002017485250")
 REQ_CHANNEL = int(REQ_CHANNEL) if REQ_CHANNEL and id_pattern.search(REQ_CHANNEL) else False
 
 TG_BOT_WORKERS = int(os.environ.get("TG_BOT_WORKERS", "4"))
